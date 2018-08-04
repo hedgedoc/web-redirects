@@ -1,0 +1,21 @@
+image: quay.io/sheogorath/build-ah-engine
+
+before_script:
+  - podman login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+build-master:
+  stage: build
+  script:
+    - buildah bud --pull -t "$CI_REGISTRY_IMAGE" .
+    - buildah push "$CI_REGISTRY_IMAGE" "docker://$CI_REGISTRY_IMAGE"
+  only:
+    - master
+
+build:
+  stage: build
+  script:
+    - buildah bud --pull -t "$CI_REGISTRY_IMAGE" .
+    - echo "Image will be pushed to ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
+    - buildah push "$CI_REGISTRY_IMAGE" "docker://${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
+  except:
+    - master
