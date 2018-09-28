@@ -1,7 +1,7 @@
 Translation redirect
 ===
 
-CodiMD uses POEditor as a platform for translations. Since the url is not really human friendly, let's add a subdomain to automatically redirect to it.
+CodiMD has currently no webpage. So let's redirect people to our GitHub page.
 
 How to build
 ---
@@ -9,9 +9,9 @@ How to build
 Simply build the docker container
 
 ```console
-git clone https://octo.sh/Sheogorath/translation-redirect
-cd translation-redirect
-docker build -t quay.io/madirc/translation-redirect:latest .
+git clone https://octo.sh/Sheogorath/codimd-redirect
+cd codimd-redirect
+docker build -t quay.io/sheogorath/codimd-redirect:latest .
 ```
 
 How to run
@@ -20,14 +20,12 @@ How to run
 Simply run the container
 
 ```console
-docker run -d --restart always -p 80:80 quay.io/sheogorath/translation-redirect
+docker run -d --restart always -p 80:80 quay.io/sheogorath/codimd-redirect
 ```
 
 Or run locally to check details:
 
 ```console
-docker run --rm -it -p 80:80 quay.io/sheogorath/translation-redirect
+docker run --rm -it -p 80:80 quay.io/sheogorath/codimd-redirect
 ```
-
-
 
