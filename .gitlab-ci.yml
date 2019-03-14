@@ -6,16 +6,16 @@ before_script:
 build-master:
   stage: build
   script:
-    - buildah bud --pull -t "$CI_REGISTRY_IMAGE" .
-    - buildah push "$CI_REGISTRY_IMAGE" "docker://$CI_REGISTRY_IMAGE"
+    - podman build --pull -t "$CI_REGISTRY_IMAGE" .
+    - podman push "$CI_REGISTRY_IMAGE" "docker://$CI_REGISTRY_IMAGE"
   only:
     - master
 
 build:
   stage: build
   script:
-    - buildah bud --pull -t "$CI_REGISTRY_IMAGE" .
+    - podman build --pull -t "$CI_REGISTRY_IMAGE" .
     - echo "Image will be pushed to ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
-    - buildah push "$CI_REGISTRY_IMAGE" "docker://${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
+    - podman push "$CI_REGISTRY_IMAGE" "docker://${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
   except:
     - master
