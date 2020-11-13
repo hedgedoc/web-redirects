@@ -44,6 +44,9 @@ nginx-validation:
     # Test Developer Chat
     - "curl -v -H 'Host: chat.codimd.org' http://localhost/development 2>&1 | grep -q 'https://matrix.to/#/#hedgedoc-dev:matrix.org'"
     - "curl -v -H 'Host: chat.hedgedoc.org' http://localhost/development 2>&1 | grep -q 'https://matrix.to/#/#hedgedoc-dev:matrix.org'"
+    # Test Docs
+    - "curl -v -H 'Host: docs.codimd.org' http://localhost/ 2>&1 | grep -q 'https://github.com/hedgedoc/hedgedoc/tree/HEAD/docs'"
+    - "curl -v -H 'Host: docs.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://github.com/hedgedoc/hedgedoc/tree/HEAD/docs'"
     # Cleanup
     - podman stop testing
     - podman rm testing
