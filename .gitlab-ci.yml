@@ -38,6 +38,12 @@ nginx-validation:
     # Test translate
     - "curl -v -H 'Host: translate.codimd.org' http://localhost/ 2>&1 | grep -q 'https://poeditor.com/join/project/1OpGjF2Jir'"
     - "curl -v -H 'Host: translate.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://poeditor.com/join/project/1OpGjF2Jir'"
+    # Test General Chat
+    - "curl -v -H 'Host: chat.codimd.org' http://localhost/ 2>&1 | grep -q 'https://matrix.to/#/#hedgedoc:matrix.org'"
+    - "curl -v -H 'Host: chat.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://matrix.to/#/#hedgedoc:matrix.org'"
+    # Test Developer Chat
+    - "curl -v -H 'Host: chat.codimd.org' http://localhost/development 2>&1 | grep -q 'https://matrix.to/#/#hedgedoc:matrix.org'"
+    - "curl -v -H 'Host: chat.hedgedoc.org' http://localhost/development 2>&1 | grep -q 'https://matrix.to/#/#hedgedoc:matrix.org'"
     # Cleanup
     - podman stop testing
     - podman rm testing
