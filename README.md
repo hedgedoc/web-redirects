@@ -1,7 +1,7 @@
-Translation redirect
+HedgeDoc redirect
 ===
 
-CodiMD has currently no webpage. So let's redirect people to our GitHub page.
+This project manages all redirects for the HedgeDoc project.
 
 How to build
 ---
@@ -9,7 +9,7 @@ How to build
 Simply build the docker container
 
 ```console
-git clone https://octo.sh/Sheogorath/codimd-redirect
+git clone https://git.shivering-isles.com/codimd/redirect.git
 cd codimd-redirect
 docker build -t quay.io/sheogorath/codimd-redirect:latest .
 ```
@@ -28,4 +28,3 @@ Or run locally to check details:
 ```console
 docker run --rm -it -p 80:80 quay.io/sheogorath/codimd-redirect
 ```
-

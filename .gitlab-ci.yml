@@ -1,21 +1,58 @@
-image: quay.io/sheogorath/build-ah-engine
+include:
+  - project: 'container-library/build-ah-engine'
+    ref: 1.3.1
+    file: '/gitlab-ci-template.yml'
 
-before_script:
-  - podman login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+stages:
+  - build
+  - test
+  - tag
+  - deploy
 
-build-master:
-  stage: build
+nginx-validation:
+  stage: test
+  image: quay.io/sheogorath/build-ah-engine:latest
+  variables:
+    LANG: C.UTF-8
+  before_script:
+    - dnf install -y curl
   script:
-    - podman build --pull -t "$CI_REGISTRY_IMAGE" .
-    - podman push "$CI_REGISTRY_IMAGE" "docker://$CI_REGISTRY_IMAGE"
-  only:
-    - master
+    - podman run -d -p 80:80 --name testing $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+    - sleep 5
+    # Validate config
+    - podman exec testing nginx -c /etc/nginx/nginx.conf -t
+    # Test default
+    - "curl -v -H 'Host: example.org' http://localhost/ 2>&1 | grep -q 'https://hedgedoc.org'"
+    # Test main domain
+    - "curl -v -H 'Host: codimd.org' http://localhost/ 2>&1 | grep -q 'https://hedgedoc.org'"
+    - "curl -v -H 'Host: hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://hedgedoc.org'"
+    # Test demo
+    - "curl -v -H 'Host: demo.codimd.org' http://localhost/ 2>&1 | grep -q 'https://demo.hedgedoc.org'"
+    - "curl -v -H 'Host: demo.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://demo.hedgedoc.org'"
+    # Test social
+    - "curl -v -H 'Host: social.codimd.org' http://localhost/ 2>&1 | grep -q 'https://social.snopyta.org/@CodiMD'"
+    - "curl -v -H 'Host: social.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://social.snopyta.org/@CodiMD'"
+    # Test community
+    - "curl -v -H 'Host: community.codimd.org' http://localhost/ 2>&1 | grep -q 'https://community.codimd.org'"
+    - "curl -v -H 'Host: community.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://community.codimd.org'"
+    # Test translate
+    - "curl -v -H 'Host: translate.codimd.org' http://localhost/ 2>&1 | grep -q 'https://poeditor.com/join/project/1OpGjF2Jir'"
+    - "curl -v -H 'Host: translate.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://poeditor.com/join/project/1OpGjF2Jir'"
+    # Cleanup
+    - podman stop testing
+    - podman rm testing
 
-build:
-  stage: build
-  script:
-    - podman build --pull -t "$CI_REGISTRY_IMAGE" .
-    - echo "Image will be pushed to ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
-    - podman push "$CI_REGISTRY_IMAGE" "docker://${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}"
-  except:
-    - master
+container-tagging:
+  stage: tag
+  variables:
+    CI_REGISTRY_IMAGE_VERSION: latest
+
+deploy:
+  stage: deploy
+  variables:
+    PLAYBOOK: static_websites.yml
+  trigger:
+    project: shivering-isles/ansible-infrastructure-deploy
+    strategy: depend
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
