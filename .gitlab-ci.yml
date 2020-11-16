@@ -30,8 +30,8 @@ nginx-validation:
     - "curl -v -H 'Host: demo.codimd.org' http://localhost/ 2>&1 | grep -q 'https://demo.hedgedoc.org'"
     - "curl -v -H 'Host: demo.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://demo.hedgedoc.org'"
     # Test social
-    - "curl -v -H 'Host: social.codimd.org' http://localhost/ 2>&1 | grep -q 'https://social.snopyta.org/@CodiMD'"
-    - "curl -v -H 'Host: social.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://social.snopyta.org/@CodiMD'"
+    - "curl -v -H 'Host: social.codimd.org' http://localhost/ 2>&1 | grep -q 'https://social.snopyta.org/@HedgeDoc'"
+    - "curl -v -H 'Host: social.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://social.snopyta.org/@HedgeDoc'"
     # Test community
     - "curl -v -H 'Host: community.codimd.org' http://localhost/ 2>&1 | grep -q 'https://community.codimd.org'"
     - "curl -v -H 'Host: community.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://community.codimd.org'"
