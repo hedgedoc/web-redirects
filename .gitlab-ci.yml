@@ -33,8 +33,8 @@ nginx-validation:
     - "curl -v -H 'Host: social.codimd.org' http://localhost/ 2>&1 | grep -q 'https://social.snopyta.org/@HedgeDoc'"
     - "curl -v -H 'Host: social.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://social.snopyta.org/@HedgeDoc'"
     # Test community
-    - "curl -v -H 'Host: community.codimd.org' http://localhost/ 2>&1 | grep -q 'https://community.codimd.org'"
-    - "curl -v -H 'Host: community.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://community.codimd.org'"
+    - "curl -v -H 'Host: community.codimd.org' http://localhost/ 2>&1 | grep -q 'https://community.hedgedoc.org'"
+    - "curl -v -H 'Host: community.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://community.hedgedoc.org'"
     # Test translate
     - "curl -v -H 'Host: translate.codimd.org' http://localhost/ 2>&1 | grep -q 'https://poeditor.com/join/project/1OpGjF2Jir'"
     - "curl -v -H 'Host: translate.hedgedoc.org' http://localhost/ 2>&1 | grep -q 'https://poeditor.com/join/project/1OpGjF2Jir'"
