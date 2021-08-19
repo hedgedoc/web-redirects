@@ -17,7 +17,7 @@ nginx-validation:
   before_script:
     - dnf install -y curl
   script:
-    - podman run -d -p 80:80 --name testing $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+    - podman run -d -p 80:8080 --name testing $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
     - sleep 5
     # Validate config
     - podman exec testing nginx -c /etc/nginx/nginx.conf -t
