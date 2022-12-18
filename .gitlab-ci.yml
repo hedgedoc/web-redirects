@@ -1,6 +1,6 @@
 include:
   - project: 'container-library/build-ah-engine'
-    ref: 1.4.0
+    ref: 2.1.4
     file: '/gitlab-ci-template.yml'
 
 stages:
